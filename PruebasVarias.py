@@ -20,15 +20,15 @@ def Colocarminas(c):
 
     return c_dict, c
         
-def ContarCuadros(c):
+def ContarCuadros(c, c_l):
     comp = 0
     h = 0
     for i in c:
         
         if c[i] == False:
-            if "mina" in (i[0]+1,i[1]):
+            if (i[0]+1,i[1]) == True:
                 comp += 1
-            if "mina" in (i[0]+1,i[1]+1):
+            if (i[0]+1,i[1]+1) == T:
                 comp += 1
             if "mina" in (i[0],i[1]+1):
                 comp += 1
