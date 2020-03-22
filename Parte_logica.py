@@ -79,14 +79,16 @@ def ejecucion(coord_ing, dt, dt2, ls):
             print("GAME OVER")
             return
         else:
-            print("(1,0):", a)
+            print(dt2[coord_ing])
+
+            """print("(1,0):", a)
             print("(1,1):", b)
             print("(0,1):", c)
             print("(-1,1):", d)
             print("(-1,0):", e)
             print("(-1,-1):", f)
             print("(0,-1):", g)
-            print("(1,-1):", h)
+            print("(1,-1):", h)"""
         intento_x = int(input("ingrese una coordenada en x:"))
         intento_y = int(input("ingrese una coordenada en y:"))
         coord_ing = (intento_x, intento_y)
