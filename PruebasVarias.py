@@ -16,33 +16,40 @@ def Colocarminas(c):
         Mina = rng.randrange(0, len(c))
         # c[Mina] = (c[Mina], "mina")
         c_dict[c[Mina]] = c_dict.get(i, True)
-    print(c_dict)
 
     return c_dict, c
         
 def ContarCuadros(c, c_l):
-    comp = 0
+    
     h = 0
     for i in c:
-        
+        comp = 0
+        y = c_l[h]
         if c[i] == False:
-            if (i[0]+1,i[1]) == True:
-                comp += 1
-            if (i[0]+1,i[1]+1) == T:
-                comp += 1
-            if "mina" in (i[0],i[1]+1):
-                comp += 1
-            if "mina" in (i[0]-1,i[1]+1):
-                comp += 1
-            if "mina" in (i[0]-1,i[1]):
-                comp += 1
-            if "mina" in (i[0]-1,i[1]-1):
-                comp += 1
-            if "mina" in (i[0],i[1]+1):
-                comp += 1
-        c[h] = (c[h], comp)
+            if (y[0]+1,y[1]) in c:
+                if c[(y[0]+1,y[1])] == True:
+                    comp += 1
+            if (y[0]+1,y[1]+1) in c:
+                if c[(y[0]+1,y[1]+1)] == True:
+                    comp += 1
+            if (y[0],y[1]+1) in c:
+                if c[(y[0],y[1]+1)] == True:
+                    comp += 1
+            if (y[0]-1,y[1]+1) in c:
+                if c[(y[0]-1,y[1]+1)] == True:
+                    comp += 1
+            if (y[0]-1,y[1]) in c:
+                if c[(y[0]-1,y[1])] == True:
+                    comp += 1
+            if (y[0]-1,y[1]-1) in c:
+                if c[(y[0]-1,y[1]-1)] == True:
+                    comp += 1
+            if (y[0],y[1]+1) in c:
+                if c[(y[0],y[1]+1)] == True:
+                    comp += 1
+        c_l[h] = (c_l[h], comp)
         h += 1    
-    return c
+    return (c, c_l)
         
 
 
@@ -50,6 +57,7 @@ def ContarCuadros(c, c_l):
 #BOE
 cuadricula = HacerCuadricula(5)
 minas_d, minas = Colocarminas(cuadricula)
-cuadricula2 = ContarCuadros(minas_d, minas)
-print(cuadricula2)
+cuadricula2, final = ContarCuadros(minas_d, minas)
+print(final)
 #EOE
+
