@@ -20,7 +20,7 @@ def Colocarminas(c):
     return c_dict, c
         
 def ContarCuadros(c, c_l):
-    
+    c2 = {}
     h = 0
     for i in c:
         comp = 0
@@ -47,17 +47,39 @@ def ContarCuadros(c, c_l):
             if (y[0],y[1]+1) in c:
                 if c[(y[0],y[1]+1)] == True:
                     comp += 1
-        c_l[h] = (c_l[h], comp)
-        h += 1    
-    return (c, c_l)
+        #c_l[h] = (c_l[h], comp)
+        c2[i] = c2.get(i, comp)
+        h += 1
+    return (c, c2, c_l)
+
+def ejecucion(coord_ing, dt, dt2, ls):
+
+    if dt[coord_ing] == True:
+        print("GAME OVER")
+    else:
+        print("(1,0): {0}".format(dt2[(ls[0]+1,ls[1])]))
+        print("(1,1):{0}".format(dt2[(ls[0]+1,ls[1]+1)]))
+        print("(0,1):{0}".format(dt2[(ls[0],ls[1]+1)]))
+        print("(-1,1):{0}".format(dt2[(ls[0]-1,ls[1]+1)]))
+        print("(-1,0):{0}".format(dt2[(ls[0]-1,ls[1])]))
+        print("(-1,-1):{0}".format(dt2[(ls[0]-1,ls[1]-1)]))
+        print("(0,-1):{0}".format(dt2[(ls[0],ls[1]-1)]))
+        print("(1,-1):{0}".format(dt2[(ls[0]+1,ls[1]-1)]))
+    
         
 
 
 
 #BOE
-cuadricula = HacerCuadricula(5)
-minas_d, minas = Colocarminas(cuadricula)
-cuadricula2, final = ContarCuadros(minas_d, minas)
-print(final)
+sz = int(input("Tamaño de la cuadricula simetrica:"))
+intento_x = int(input("ingrese una coordenada en x:"))
+intento_y = int(input("ingrese una coordenada en y:"))
+intento = (intento_x, intento_y)
+cuadricula_ls = HacerCuadricula(5)
+minas_d, minas = Colocarminas(cuadricula_ls)
+mapa, cuadricula2_dt, final_ls = ContarCuadros(minas_d, minas)
+ejecucion(intento, mapa, cuadricula2_dt, final_ls)
+
 #EOE
+
 
