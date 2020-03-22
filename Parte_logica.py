@@ -53,24 +53,36 @@ def ContarCuadros(c, c_l):
     return (c, c2, c_l)
 
 def ejecucion(coord_ing, dt, dt2, ls):
+    for i in ls:
+        if i == coord_ing:
+            y = i
+
+    a = dt2[(y[0]+1, y[1])]
+    b = dt2[(y[0]+1, y[1]+1)]
+    c = dt2[(y[0], y[1]+1)]
+    d = dt2[(y[0]-1, y[1]+1)]
+    e = dt2[(y[0]-1, y[1])]
+    f = dt2[(y[0]-1, y[1]-1)]
+    g = dt2[(y[0], y[1]-1)]
+    h = dt2[(y[0]+1, y[1]-1)]
 
     if dt[coord_ing] == True:
         print("GAME OVER")
     else:
-        print("(1,0): {0}".format(dt2[(ls[0]+1,ls[1])]))
-        print("(1,1):{0}".format(dt2[(ls[0]+1,ls[1]+1)]))
-        print("(0,1):{0}".format(dt2[(ls[0],ls[1]+1)]))
-        print("(-1,1):{0}".format(dt2[(ls[0]-1,ls[1]+1)]))
-        print("(-1,0):{0}".format(dt2[(ls[0]-1,ls[1])]))
-        print("(-1,-1):{0}".format(dt2[(ls[0]-1,ls[1]-1)]))
-        print("(0,-1):{0}".format(dt2[(ls[0],ls[1]-1)]))
-        print("(1,-1):{0}".format(dt2[(ls[0]+1,ls[1]-1)]))
-    
+        print("(1,0):", a)
+        print("(1,1):", b)
+        print("(0,1):", c)
+        print("(-1,1):", d)
+        print("(-1,0):", e)
+        print("(-1,-1):", f)
+        print("(0,-1):", g)
+        print("(1,-1):", h)
         
 
 
 
 #BOE
+
 sz = int(input("Tamaño de la cuadricula simetrica:"))
 intento_x = int(input("ingrese una coordenada en x:"))
 intento_y = int(input("ingrese una coordenada en y:"))
@@ -81,5 +93,4 @@ mapa, cuadricula2_dt, final_ls = ContarCuadros(minas_d, minas)
 ejecucion(intento, mapa, cuadricula2_dt, final_ls)
 
 #EOE
-
 
