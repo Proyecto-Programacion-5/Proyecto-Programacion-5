@@ -1,56 +1,53 @@
 import random
 
-def HacerCuadricula(a):
-    c = []
-    for i in range(1, a + 1):
-        for j in range(1, a + 1):
-            c.append((i,j))
-    return c
+def HacerCuadricula(size):
+    cuadricula = []
+    for i in range(1, size + 1):
+        for j in range(1, size + 1):
+            cuadricula.append((i,j))
+    return cuadricula
             
-def Colocarminas(c):
-    c_dict = {}
-    for i in c:
-        c_dict[i] = c_dict.get(i, False)
+def Colocarminas(lista):
+    minas_d= {}
+    for i in lista:
+        minas_d[i] = minas_d.get(i, False)
     rng = random.Random()
-    for i in range(len(c) // 5):
-        Mina = rng.randrange(0, len(c))
-        # c[Mina] = (c[Mina], "mina")
-        c_dict[c[Mina]] = c_dict.get(i, True)
-
-    return c_dict
+    for i in range(len(lista) // 5):
+        Mina = rng.randrange(0, len(lista))
+        minas_d[lista[Mina]] = minas_d.get(i, True)
+    return minas_d
         
-def ContarCuadros(c, c_l):
-    c2 = {}
-    h = 0
-    for i in c:
-        comp = 0
-        y = c_l[h]
-        if c[i] == False:
-            if (y[0]+1,y[1]) in c:
-                if c[(y[0]+1,y[1])] == True:
-                    comp += 1
-            if (y[0]+1,y[1]+1) in c:
-                if c[(y[0]+1,y[1]+1)] == True:
-                    comp += 1
-            if (y[0],y[1]+1) in c:
-                if c[(y[0],y[1]+1)] == True:
-                    comp += 1
-            if (y[0]-1,y[1]+1) in c:
-                if c[(y[0]-1,y[1]+1)] == True:
-                    comp += 1
-            if (y[0]-1,y[1]) in c:
-                if c[(y[0]-1,y[1])] == True:
-                    comp += 1
-            if (y[0]-1,y[1]-1) in c:
-                if c[(y[0]-1,y[1]-1)] == True:
-                    comp += 1
-            if (y[0],y[1]+1) in c:
-                if c[(y[0],y[1]+1)] == True:
-                    comp += 1
-        #c_l[h] = (c_l[h], comp)
-        c2[i] = c2.get(i, comp)
-        h += 1
-    return (c2, c_l)
+def ContarCuadros(minas_d, cuadricula_ls):
+    minasA_dt = {}
+    counter = 0
+    for i in minas_d:
+        minasC = 0
+        y = cuadricula_ls[counter]
+        if minas_d[i] == False:
+            if (y[0]+1,y[1]) in minas_d:
+                if minas_d[(y[0]+1,y[1])] == True:
+                    minasC += 1
+            if (y[0]+1,y[1]+1) in minas_d:
+                if minas_d[(y[0]+1,y[1]+1)] == True:
+                    minasC += 1
+            if (y[0],y[1]+1) in minas_d:
+                if minas_d[(y[0],y[1]+1)] == True:
+                    minasC += 1
+            if (y[0]-1,y[1]+1) in minas_d:
+                if minas_d[(y[0]-1,y[1]+1)] == True:
+                    minasC += 1
+            if (y[0]-1,y[1]) in minas_d:
+                if minas_d[(y[0]-1,y[1])] == True:
+                    minasC += 1
+            if (y[0]-1,y[1]-1) in minas_d:
+                if minas_d[(y[0]-1,y[1]-1)] == True:
+                    minasC += 1
+            if (y[0],y[1]+1) in minas_d:
+                if minas_d[(y[0],y[1]+1)] == True:
+                    minasC += 1
+        minasA_dt[i] = minasA_dt.get(i, minasC)
+        counter += 1
+    return (minasA_dt)
 
 def ejecucion(coord_ing, dt, dt2, ls):
     while True:
@@ -102,23 +99,22 @@ def MostrarCuadricula(size, c):
         print()
 
 #BOE
-sz = 0 
-intentos = 0
+
+sz = 0
 intento_x = 0
 intento_y = 0
 
 sz = int(input("Tamaño de la cuadricula simetrica:"))
+cuadricula_ls = HacerCuadricula(sz)
+minas_dt = Colocarminas(cuadricula_ls)
+minasA_dt = ContarCuadros(minas_dt, cuadricula_ls)
+MostrarCuadricula(sz, cuadricula_ls)
 
-cuadricula_ls = HacerCuadricula(5)
-minas_d = Colocarminas(cuadricula_ls)
-cuadricula2_dt, final_ls = ContarCuadros(minas_d, cuadricula_ls)
-MostrarCuadricula(sz, final_ls)
 
 intento_x = int(input("ingrese una coordenada en x:"))
 intento_y = int(input("ingrese una coordenada en y:"))
 intento = (intento_x, intento_y)
-
-ejecucion(intento, cuadricula_ls, cuadricula2_dt, final_ls)
+ejecucion(intento, minas_dt, minasA_dt, cuadricula_ls)
 
 #EOE
 
