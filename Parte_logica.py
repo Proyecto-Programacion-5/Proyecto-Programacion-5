@@ -17,7 +17,7 @@ def Colocarminas(c):
         # c[Mina] = (c[Mina], "mina")
         c_dict[c[Mina]] = c_dict.get(i, True)
 
-    return c_dict, c
+    return c_dict
         
 def ContarCuadros(c, c_l):
     c2 = {}
@@ -50,7 +50,7 @@ def ContarCuadros(c, c_l):
         #c_l[h] = (c_l[h], comp)
         c2[i] = c2.get(i, comp)
         h += 1
-    return (c, c2, c_l)
+    return (c2, c_l)
 
 def ejecucion(coord_ing, dt, dt2, ls):
     while True:
@@ -102,15 +102,23 @@ def MostrarCuadricula(size, c):
         print()
 
 #BOE
+sz = 0 
+intentos = 0
+intento_x = 0
+intento_y = 0
 
 sz = int(input("Tamaño de la cuadricula simetrica:"))
+
+cuadricula_ls = HacerCuadricula(5)
+minas_d = Colocarminas(cuadricula_ls)
+cuadricula2_dt, final_ls = ContarCuadros(minas_d, cuadricula_ls)
+MostrarCuadricula(sz, final_ls)
+
 intento_x = int(input("ingrese una coordenada en x:"))
 intento_y = int(input("ingrese una coordenada en y:"))
 intento = (intento_x, intento_y)
-cuadricula_ls = HacerCuadricula(5)
-minas_d, minas = Colocarminas(cuadricula_ls)
-mapa, cuadricula2_dt, final_ls = ContarCuadros(minas_d, minas)
-MostrarCuadricula(sz, final_ls)
-ejecucion(intento, mapa, cuadricula2_dt, final_ls)
+
+ejecucion(intento, cuadricula_ls, cuadricula2_dt, final_ls)
 
 #EOE
+
