@@ -54,38 +54,40 @@ def ContarCuadros(minas_d, cuadricula_ls):
     print(minasA_dt)
     return (minasA_dt)
 
-def ejecucion(minas_dt, minasA_dt, cuadricula, size):
+def ejecucion(minas_dt, minasA_dt, cuadricula, coordenada, size):
+    
     while True:
+        if minas_dt[coordenada] == True:
+                print("GAME OVER")
+                return
+        else: 
+            uncover(cuadricula, coordenada, minasA_dt, size)    
+        y = coordenada
+        minasA_dt[coordenada] = "0"
+        if (y[0]+1, y[1]) in minasA_dt:
+            a = minasA_dt[(y[0]+1, y[1])] 
+        if (y[0], y[1]+1) in minasA_dt:
+            c = minasA_dt[(y[0], y[1]+1)]
+        if (y[0]-1, y[1]) in minasA_dt:
+            e = minasA_dt[(y[0]-1, y[1])]
+        if (y[0], y[1]-1) in minasA_dt:
+            g = minasA_dt[(y[0], y[1]-1)]
+        try:
+            if a == 0:
+                ejecucion(minas_dt, minasA_dt, cuadricula, (y[0]+1, y[1]), size)
+            if c == 0:
+                ejecucion(minas_dt, minasA_dt, cuadricula, (y[0], y[1]+1), size)
+            if e == 0:
+                ejecucion(minas_dt, minasA_dt, cuadricula, (y[0]-1, y[1]), size)
+            if g == 0:
+                ejecucion(minas_dt, minasA_dt, cuadricula, (y[0], y[1]-1), size)
+        except:
+            break
         coord_x = int(input("ingrese una coordenada en x:"))
         coord_y = int(input("ingrese una coordenada en y:"))
         coordenada = (coord_x, coord_y)
-        for i in cuadricula:    
-            if i == coordenada:
-                y = i
-                if (y[0]+1, y[1]) in minasA_dt:
-                    a = minasA_dt[(y[0]+1, y[1])]
-                if (y[0]+1, y[1]+1) in minasA_dt:
-                    b = minasA_dt[(y[0]+1, y[1]+1)]
-                if (y[0], y[1]+1) in minasA_dt:
-                    c = minasA_dt[(y[0], y[1]+1)]
-                if (y[0]-1, y[1]+1) in minasA_dt:
-                    d = minasA_dt[(y[0]-1, y[1]+1)]
-                if (y[0]-1, y[1]) in minasA_dt:
-                    e = minasA_dt[(y[0]-1, y[1])]
-                if (y[0]-1, y[1]-1) in minasA_dt:
-                    f = minasA_dt[(y[0]-1, y[1]-1)]
-                if (y[0], y[1]-1) in minasA_dt:
-                    g = minasA_dt[(y[0], y[1]-1)]
-                if (y[0]+1, y[1]-1) in minasA_dt:
-                    h = minasA_dt[(y[0]+1, y[1]-1)]
-        if minas_dt[coordenada] == True:
-            print("GAME OVER")
-            return
-        else: 
-            uncover(cuadricula, coordenada, minasA_dt, size)
-           
-        
-        
+            
+    
 def MostrarCuadricula(size, cuadricula): 
     counter = 0
     for i in range(size):
@@ -93,6 +95,7 @@ def MostrarCuadricula(size, cuadricula):
             print(cuadricula[counter], end = " ")
             counter += 1
         print()
+    print()
         
 def uncover(cuadricula, coordenada, minasA_dt, sz):
     for i in range(len(cuadricula)):
@@ -112,6 +115,9 @@ minas_dt = Colocarminas(cuadricula_ls)
 minasA_dt = ContarCuadros(minas_dt, cuadricula_ls)
 MostrarCuadricula(sz, cuadricula_ls)
 
-ejecucion(minas_dt, minasA_dt, cuadricula_ls, sz)
+coord_x = int(input("ingrese una coordenada en x:"))
+coord_y = int(input("ingrese una coordenada en y:"))
+coordenada = (coord_x, coord_y)
+ejecucion(minas_dt, minasA_dt, cuadricula_ls, coordenada, sz)
 
 #EOE
