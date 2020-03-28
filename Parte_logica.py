@@ -49,10 +49,13 @@ def ContarCuadros(minas_d, cuadricula_ls):
         counter += 1
     return (minasA_dt)
 
-def ejecucion(coord_ing, dt, dt2, ls):
+def ejecucion(dt, dt2, ls):
     while True:
+        coord_x = int(input("ingrese una coordenada en x:"))
+        coord_y = int(input("ingrese una coordenada en y:"))
+        coordenada = (coord_x, coord_y)
         for i in ls:
-            if i == coord_ing:
+            if i == coordenada:
                 y = i
 
         if (y[0]+1, y[1]) in dt2:
@@ -72,12 +75,11 @@ def ejecucion(coord_ing, dt, dt2, ls):
         if (y[0]+1, y[1]-1) in dt2:
             h = dt2[(y[0]+1, y[1]-1)]
 
-        if dt[coord_ing] == True:
+        if dt[coordenada] == True:
             print("GAME OVER")
             return
         else:
-            print(dt2[coord_ing])
-
+            print(dt2[coordenada])
             """print("(1,0):", a)
             print("(1,1):", b)
             print("(0,1):", c)
@@ -86,9 +88,7 @@ def ejecucion(coord_ing, dt, dt2, ls):
             print("(-1,-1):", f)
             print("(0,-1):", g)
             print("(1,-1):", h)"""
-        intento_x = int(input("ingrese una coordenada en x:"))
-        intento_y = int(input("ingrese una coordenada en y:"))
-        coord_ing = (intento_x, intento_y)
+        
         
 def MostrarCuadricula(size, c): 
     a = 0
@@ -100,21 +100,12 @@ def MostrarCuadricula(size, c):
 
 #BOE
 
-sz = 0
-intento_x = 0
-intento_y = 0
 
 sz = int(input("Tamaño de la cuadricula simetrica:"))
 cuadricula_ls = HacerCuadricula(sz)
 minas_dt = Colocarminas(cuadricula_ls)
 minasA_dt = ContarCuadros(minas_dt, cuadricula_ls)
 MostrarCuadricula(sz, cuadricula_ls)
-
-
-intento_x = int(input("ingrese una coordenada en x:"))
-intento_y = int(input("ingrese una coordenada en y:"))
-intento = (intento_x, intento_y)
-ejecucion(intento, minas_dt, minasA_dt, cuadricula_ls)
+ejecucion(minas_dt, minasA_dt, cuadricula_ls)
 
 #EOE
-
