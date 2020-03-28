@@ -93,6 +93,14 @@ def ejecucion(coord_ing, dt, dt2, ls):
         intento_y = int(input("ingrese una coordenada en y:"))
         coord_ing = (intento_x, intento_y)
         
+def MostrarCuadricula(size, c): 
+    a = 0
+    for i in range(size):
+        for j in range(size):
+            print(c[a], end = " ")
+            a += 1
+        print()
+
 #BOE
 
 sz = int(input("Tamaño de la cuadricula simetrica:"))
@@ -102,6 +110,7 @@ intento = (intento_x, intento_y)
 cuadricula_ls = HacerCuadricula(5)
 minas_d, minas = Colocarminas(cuadricula_ls)
 mapa, cuadricula2_dt, final_ls = ContarCuadros(minas_d, minas)
+MostrarCuadricula(sz, final_ls)
 ejecucion(intento, mapa, cuadricula2_dt, final_ls)
 
 #EOE
