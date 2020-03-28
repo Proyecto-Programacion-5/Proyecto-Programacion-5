@@ -66,23 +66,21 @@ def ejecucion(minas_dt, minasA_dt, cuadricula, coordenada, size):
         minasA_dt[coordenada] = "0"
         if (y[0]+1, y[1]) in minasA_dt:
             a = minasA_dt[(y[0]+1, y[1])] 
-        if (y[0], y[1]+1) in minasA_dt:
-            c = minasA_dt[(y[0], y[1]+1)]
-        if (y[0]-1, y[1]) in minasA_dt:
-            e = minasA_dt[(y[0]-1, y[1])]
-        if (y[0], y[1]-1) in minasA_dt:
-            g = minasA_dt[(y[0], y[1]-1)]
-        try:
             if a == 0:
                 ejecucion(minas_dt, minasA_dt, cuadricula, (y[0]+1, y[1]), size)
+        if (y[0], y[1]+1) in minasA_dt:
+            c = minasA_dt[(y[0], y[1]+1)]
             if c == 0:
                 ejecucion(minas_dt, minasA_dt, cuadricula, (y[0], y[1]+1), size)
+        if (y[0]-1, y[1]) in minasA_dt:
+            e = minasA_dt[(y[0]-1, y[1])]
             if e == 0:
                 ejecucion(minas_dt, minasA_dt, cuadricula, (y[0]-1, y[1]), size)
+        if (y[0], y[1]-1) in minasA_dt:
+            g = minasA_dt[(y[0], y[1]-1)]
             if g == 0:
                 ejecucion(minas_dt, minasA_dt, cuadricula, (y[0], y[1]-1), size)
-        except:
-            break
+            
         coord_x = int(input("ingrese una coordenada en x:"))
         coord_y = int(input("ingrese una coordenada en y:"))
         coordenada = (coord_x, coord_y)
