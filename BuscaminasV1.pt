@@ -142,7 +142,7 @@ class Juego:
                     self.uncover((y[0]+1,y[1]-1))
                 if (y[0]-1,y[1]-1) in self.minas_d:
                     self.uncover((y[0]-1,y[1]-1))
-                print("Quedan {0} Banderas por colocar.".format(self.banderas_restantes - self.banderas_colocadas))
+                # print("Quedan {0} Banderas por colocar.".format(self.banderas_restantes - self.banderas_colocadas))
                         
     def MostrarCuadricula(self):
         counter = 0
@@ -180,6 +180,10 @@ while True:
     juego.coordenada = (coord_x, coord_y)
     juego.ejecucion(juego.coordenada, juego.estado)
     juego.MostrarCuadricula()
+    if juego.banderas_restantes - juego.banderas_colocadas == 1:
+        print("Queda {0} Bandera por colocar.".format(juego.banderas_restantes - juego.banderas_colocadas))
+    else:
+        print("Quedan {0} Banderas por colocar.".format(juego.banderas_restantes - juego.banderas_colocadas))
     if juego.comp_victoria() == "v":
         sys.exit()
 #EOE
