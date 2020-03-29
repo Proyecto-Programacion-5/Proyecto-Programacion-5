@@ -60,10 +60,10 @@ class Juego:
         
     def ejecucion(self, coordenada):
             if self.minas_d[coordenada] == True:
-                    print("GAME OVER")
+                    print("F")
                     sys.exit()
             else: 
-                self.uncover(coordenada)    
+                self.uncover(coordenada)  
             y = coordenada
             if self.minasA_dt[coordenada] == 0:
                 self.minasA_dt[coordenada] = "0"
@@ -109,7 +109,6 @@ class Juego:
         for i in range(len(self.cuadricula)):
             if self.cuadricula[i] == coordenada:
                 self.cuadricula[i] = "  {0}   ".format(self.minasA_dt.get(coordenada))
-                self.MostrarCuadricula()
    
 #BOE
 juego = Juego(int(input("Tamaño de la cuadricula")))
@@ -122,4 +121,5 @@ while True:
     coord_y = int(input("ingrese una coordenada en y:"))
     juego.coordenada = (coord_x, coord_y)
     juego.ejecucion(juego.coordenada)
+    juego.MostrarCuadricula()
 #EOE
