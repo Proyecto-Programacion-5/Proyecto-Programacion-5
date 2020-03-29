@@ -21,7 +21,6 @@ class Juego:
         for i in range(len(self.minas_d) // 5):
             Mina = rng.randrange(0, len(lista))
             self.minas_d[lista[Mina]] = self.minas_d.get(i, True)
-        print(self.minas_d)
         return self.minas_d 
 
     def ContarCuadros(self):
@@ -57,7 +56,6 @@ class Juego:
                         minasC += 1 
                 self.minasA_dt[i] = self.minasA_dt.get(i, minasC)
             counter += 1
-        print(self.minasA_dt)
         return self.minasA_dt
         
     def ejecucion(self, coordenada):
@@ -67,23 +65,37 @@ class Juego:
             else: 
                 self.uncover(coordenada)    
             y = coordenada
-            self.minasA_dt[coordenada] = "0"
-            if (y[0]+1, y[1]) in self.minasA_dt:
-                a = self.minasA_dt[(y[0]+1, y[1])] 
-                if a == 0:
-                    self.ejecucion((y[0]+1, y[1]))
-            if (y[0], y[1]+1) in self.minasA_dt:
-                c = self.minasA_dt[(y[0], y[1]+1)]
-                if c == 0:
-                    self.ejecucion((y[0], y[1]+1))
-            if (y[0]-1, y[1]) in self.minasA_dt:
-                e = self.minasA_dt[(y[0]-1, y[1])]
-                if e == 0:
-                    self.ejecucion((y[0]-1, y[1]))
-            if (y[0], y[1]-1) in self.minasA_dt:
-                g = self.minasA_dt[(y[0], y[1]-1)]
-                if g == 0:
-                    self.ejecucion((y[0], y[1]-1))
+            if self.minasA_dt[coordenada] == 0:
+                self.minasA_dt[coordenada] = "0"
+                if (y[0]+1, y[1]) in self.minasA_dt:
+                    a = self.minasA_dt[(y[0]+1, y[1])]
+                    self.uncover((y[0]+1, y[1]))
+                    if a == 0:
+                        self.ejecucion((y[0]+1, y[1]))
+                if (y[0], y[1]+1) in self.minasA_dt:
+                    c = self.minasA_dt[(y[0], y[1]+1)]
+                    self.uncover((y[0], y[1]+1))
+                    if c == 0:
+                        self.ejecucion((y[0], y[1]+1))
+                if (y[0]-1, y[1]) in self.minasA_dt:
+                    e = self.minasA_dt[(y[0]-1, y[1])]
+                    self.uncover((y[0]-1, y[1]))
+                    if e == 0:
+                        self.ejecucion((y[0]-1, y[1]))
+                if (y[0], y[1]-1) in self.minasA_dt:
+                    g = self.minasA_dt[(y[0], y[1]-1)]
+                    self.uncover((y[0], y[1]-1))
+                    if g == 0:
+                        self.ejecucion((y[0], y[1]-1))
+                if (y[0]+1,y[1]+1) in self.minas_d:
+                    self.uncover((y[0]+1,y[1]+1))
+                if (y[0]-1,y[1]+1) in self.minas_d:
+                    self.uncover((y[0]-1,y[1]+1))
+                if (y[0]+1,y[1]-1) in self.minas_d:
+                    self.uncover((y[0]+1,y[1]-1))
+                if (y[0]-1,y[1]-1) in self.minas_d:
+                    self.uncover((y[0]-1,y[1]-1))
+                    
     def MostrarCuadricula(self):
         counter = 0
         for i in range(self.size):
