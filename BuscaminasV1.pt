@@ -1,4 +1,3 @@
-  
 import random
 import sys
 
@@ -7,15 +6,15 @@ class Juego:
         self.size = size
         self.cont_band = 0
         self.banderas_colocadas = 0
-
-        
-
+        if size < 0:
+            cuadricula_negativa = ValueError("No se puede hacer una cuadricula con valores negativos")
+            raise cuadricula_negativa
 
     def HacerCuadricula(self):
         self.cuadricula = []
         for i in range(1, self.size + 1):
             for j in range(1, self.size + 1):
-                self.cuadricula.append((i,j))
+                self.cuadricula.append((j,i))
         self.cc = self.cuadricula[:]
         return self.cuadricula
 
@@ -88,6 +87,9 @@ class Juego:
 
 
     def ejecucion(self, coordenada, est = 0):
+        coord_outrange = ValueError("Coordenada Fuera de rango")
+        if coordenada not in self.cuadricula:
+            raise coord_outrange
         self.comp_victoria()
 
         if est == "B" or est == "b":
@@ -108,6 +110,7 @@ class Juego:
 
             if self.minas_d[coordenada] == True:
                     print("F")
+                    juego.MostrarRespuesta()
                     sys.exit()
             else: 
                 self.uncover(coordenada)  
@@ -152,6 +155,22 @@ class Juego:
                 counter += 1
             print()
         print()
+    
+    def MostrarRespuesta(self):
+        resp = []
+        for i in self.minas_d.values():
+            if i == True:
+                resp.append("  *   ")
+            else:
+                resp.append("  0   ")
+        counter = 0
+        for i in range(self.size):
+            for j in range(self.size):
+                print(resp[counter], end= " ")
+                counter += 1
+            print()
+        print()
+
     
     def uncover(self, coordenada):
         for i in range(len(self.cuadricula)):
