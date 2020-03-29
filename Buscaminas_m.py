@@ -1,4 +1,6 @@
 import random
+import sys
+
 class Juego:
     def __init__(self, size = 30):
         self.size = size
@@ -19,6 +21,7 @@ class Juego:
         for i in range(len(self.minas_d) // 5):
             Mina = rng.randrange(0, len(lista))
             self.minas_d[lista[Mina]] = self.minas_d.get(i, True)
+        print(self.minas_d)
         return self.minas_d 
 
     def ContarCuadros(self):
@@ -54,38 +57,33 @@ class Juego:
                         minasC += 1 
                 self.minasA_dt[i] = self.minasA_dt.get(i, minasC)
             counter += 1
+        print(self.minasA_dt)
         return self.minasA_dt
         
-    def ejecucion(self):
-        while True:
-            self.coord_x = int("Ingrese la cordenada en X")
-            self.coord_y = int("Ingrese la cordenada en Y")
-            self.coordenada = (self.coord_x, self.coord_y)
-            
-            for i in self.cuadricula:
-                if i == self.coordenada:
-                    if (i[0]+1, i[1]) in minasA_dt:
-                        a = minasA_dt[(i[0]+1, i[1])]
-                    if (i[0]+1, i[1]+1) in minasA_dt:
-                        b = minasA_dt[(i[0]+1, i[1]+1)]
-                    if (i[0], i[1]+1) in minasA_dt:
-                        c = minasA_dt[(i[0], i[1]+1)]
-                    if (i[0]-1, i[1]+1) in minasA_dt:
-                        d = minasA_dt[(i[0]-1, i[1]+1)]
-                    if (i[0]-1, i[1]) in minasA_dt:
-                        e = minasA_dt[(i[0]-1, i[1])]
-                    if (i[0]-1, i[1]-1) in minasA_dt:
-                        f = minasA_dt[(i[0]-1, i[1]-1)]
-                    if (i[0], i[1]-1) in minasA_dt:
-                        g = minasA_dt[(i[0], i[1]-1)]
-                    if (i[0]+1, i[1]-1) in minasA_dt:
-                        h = minasA_dt[(i[0]+1, i[1]-1)]
-            if self.minas_d[self.coordenada] == True:
-                print("GAME OVER")
-                return
-            else:
-                uncover(self.cuadricula, self.coordenada, self.minasA_dt, self.size)
-
+    def ejecucion(self, coordenada):
+            if self.minas_d[coordenada] == True:
+                    print("GAME OVER")
+                    sys.exit()
+            else: 
+                self.uncover(coordenada)    
+            y = coordenada
+            self.minasA_dt[coordenada] = "0"
+            if (y[0]+1, y[1]) in self.minasA_dt:
+                a = self.minasA_dt[(y[0]+1, y[1])] 
+                if a == 0:
+                    self.ejecucion((y[0]+1, y[1]))
+            if (y[0], y[1]+1) in self.minasA_dt:
+                c = self.minasA_dt[(y[0], y[1]+1)]
+                if c == 0:
+                    self.ejecucion((y[0], y[1]+1))
+            if (y[0]-1, y[1]) in self.minasA_dt:
+                e = self.minasA_dt[(y[0]-1, y[1])]
+                if e == 0:
+                    self.ejecucion((y[0]-1, y[1]))
+            if (y[0], y[1]-1) in self.minasA_dt:
+                g = self.minasA_dt[(y[0], y[1]-1)]
+                if g == 0:
+                    self.ejecucion((y[0], y[1]-1))
     def MostrarCuadricula(self):
         counter = 0
         for i in range(self.size):
@@ -93,11 +91,23 @@ class Juego:
                 print(self.cuadricula[counter], end= " ")
                 counter += 1
             print()
+        print()
     
-    def uncover(self):
+    def uncover(self, coordenada):
         for i in range(len(self.cuadricula)):
-            if self.cuadricula == self.cordenadas:
-                self.cuadricula = "  {0}   ".format(self.minasA_dt.get(self.coordenada))
-                MostrarCuadricula(self.size, self.cuadricula)
-                break
-        return self.cuadricula
+            if self.cuadricula[i] == coordenada:
+                self.cuadricula[i] = "  {0}   ".format(self.minasA_dt.get(coordenada))
+                self.MostrarCuadricula()
+   
+#BOE
+juego = Juego(int(input("Tamaño de la cuadricula")))
+cuadricula = juego.HacerCuadricula()
+minas_d = juego.Colocarminas()
+minasA_dt = juego.ContarCuadros()
+juego.MostrarCuadricula()
+while True:
+    coord_x = int(input("ingrese una coordenada en x:"))
+    coord_y = int(input("ingrese una coordenada en y:"))
+    juego.coordenada = (coord_x, coord_y)
+    juego.ejecucion(juego.coordenada)
+#EOE
