@@ -88,7 +88,7 @@ class Juego:
 
     def ejecucion(self, coordenada, est = 0):
         coord_outrange = ValueError("Coordenada Fuera de rango")
-        if coordenada not in self.cuadricula:
+        if coordenada not in self.cc:
             raise coord_outrange
         self.comp_victoria()
 
