@@ -1,5 +1,6 @@
 import random
 import sys
+import time
 
 class Juego:
     def __init__(self, size = 30):
@@ -27,7 +28,6 @@ class Juego:
         for i in range(len(self.minas_d) // 5):
             Mina = rng.randrange(0, len(lista))
             self.minas_d[lista[Mina]] = self.minas_d.get(i, True)
-        self.banderas_restantes = len(self.minas_d) // 5
         return self.minas_d 
 
     def ContarCuadros(self):
@@ -63,6 +63,9 @@ class Juego:
                         minasC += 1 
                 self.minasA_dt[i] = self.minasA_dt.get(i, minasC)
             counter += 1
+        for i in self.cuadricula:
+            if i not in self.minasA_dt:
+                self.minasA_dt[i] = self.minasA_dt.get(i, True)
         return self.minasA_dt
     
     def Banderas(self, coordenada):
@@ -111,6 +114,8 @@ class Juego:
             if self.minas_d[coordenada] == True:
                     print("F")
                     juego.MostrarRespuesta()
+                    t2 = time.clock()
+                    print("Tiempo: {0} segundos.".format(t2-t1))
                     sys.exit()
             else: 
                 self.uncover(coordenada)  
@@ -178,10 +183,20 @@ class Juego:
                 self.cuadricula[i] = "  {0}   ".format(self.minasA_dt.get(coordenada))
 
     def comp_victoria(self):
-        if self.cont_band == len(self.minas_d) // 5:
+        if self.cont_band == self.cont:
             print("VICTORIA")
             return "v"
+    
+    def safe(self):
+        self.cont = 0
+        for i in minas_d:
+            if minas_d[i]== True:
+                self.cont += 1
+        while self.minasA_dt[self.coordenada] != 0:
+            self.Colocarminas()
+            self.ContarCuadros()
 
+        
 #BOE
 m = 0
 juego = Juego(int(input("Tamaño de la cuadricula:")))
@@ -189,20 +204,30 @@ cuadricula = juego.HacerCuadricula()
 minas_d = juego.Colocarminas()
 minasA_dt = juego.ContarCuadros()
 juego.MostrarCuadricula()
-
+t1 = time.clock()
 while True:
+    """ DEVELOPMEN 
+    print(juego.minas_d)
+    print(juego.minasA_dt)
+        TOOLS """
     est = input("B para bandera, X para quitar bandera, cualquier otro para continuar:")
     coord_x = int(input("ingrese una coordenada en x:"))
     coord_y = int(input("ingrese una coordenada en y:"))
-        
+
     juego.estado = (est)
     juego.coordenada = (coord_x, coord_y)
+    
+    if m == 0:
+        juego.safe()
+        m = 1
     juego.ejecucion(juego.coordenada, juego.estado)
     juego.MostrarCuadricula()
-    if juego.banderas_restantes - juego.banderas_colocadas == 1:
-        print("Queda {0} Bandera por colocar.".format(juego.banderas_restantes - juego.banderas_colocadas))
+    if juego.cont - juego.banderas_colocadas == 1:
+        print("Queda {0} Bandera por colocar.".format(juego.cont - juego.banderas_colocadas))
     else:
-        print("Quedan {0} Banderas por colocar.".format(juego.banderas_restantes - juego.banderas_colocadas))
+        print("Quedan {0} Banderas por colocar.".format(juego.cont - juego.banderas_colocadas))
     if juego.comp_victoria() == "v":
+        t2 = time.clock()
+        print("Tiempo: {0} segundos.".format(t2-t1))
         sys.exit()
 #EOE
