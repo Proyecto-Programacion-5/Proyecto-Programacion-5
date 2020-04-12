@@ -223,7 +223,11 @@ class Juego:
         
 #BOE
 m = 0
-juego = Juego(int(input("Tamaño de la cuadricula:")))
+tamano = int(input("Ingrese el tamaño de la cuadricula, debe ser mayor que 4:\n"))
+while tamano < 4:
+    print("La cuadricula debe ser mayor que 4\n")
+    tamano = int(input("Ingrese el tamaño de la cuadricula, debe ser mayor que 4:"))
+juego = Juego(tamano)
 cuadricula = juego.HacerCuadricula()
 minas_d = juego.Colocarminas()
 minasA_dt = juego.ContarCuadros()
