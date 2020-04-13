@@ -6,18 +6,20 @@ def HacerCuadricula(size, width, height, ventana, coord):
     y = (1000 - (height*size)) / 2
     for i in range(size):
         for j in range(size):
-            coord[(x,y)] = coord.get((x,y), (255, 255, 255))
-            x += width + 1
-        x -= (width + 1) * size
-        y += height + 1
+            coord[(x,y)] = coord.get((x,y), (192, 192, 192))
+            x += width + 5
+        x -= (width + 5) * size
+        y += height + 5
     return coord
+
 
 def dibujarCuadricula(coord, width, heigth):
     for i in coord:
         color = coord.get(i)
         x = i[0]
         y = i[1]
-        pygame.draw.rect(ventana, (224, 224, 224), (x - 1, y - 1, width + 2, height + 2))
+        pygame.draw.polygon(ventana, (224, 224, 224), [(x + width, y),(x + width + 2.5, y - 2.5),  (x - 2.5, y - 2.5), (x - 2.5, y + heigth + 2.5), (x, y + heigth), (x, y)])
+        pygame.draw.polygon(ventana, (64, 64, 64), [(x, y + heigth), (x - 2.5, y + heigth + 2.5), (x + width + 2.5, y + heigth + 2.5), (x + width + 2.5, y - 2.5), (x + width, y), (x + width, y + heigth)])
         pygame.draw.rect(ventana, (color), (x, y, width, height))
     
 pygame.init()
@@ -29,7 +31,7 @@ pygame.display.set_caption("Buscaminas")
 width = 50
 height = 50
 coord = {}
-coord = HacerCuadricula(4, width, height, ventana, coord)
+coord = HacerCuadricula(9, width, height, ventana, coord)
 
 run = True
 while run:
