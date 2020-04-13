@@ -1,0 +1,51 @@
+import pygame
+
+def HacerCuadricula(size, width, height, ventana, coord):
+
+    x = (1500 - (width*size)) / 2
+    y = (1000 - (height*size)) / 2
+    for i in range(size):
+        for j in range(size):
+            coord[(x,y)] = coord.get((x,y), (255, 255, 255))
+            x += width + 1
+        x -= (width + 1) * size
+        y += height + 1
+    return coord
+
+def dibujarCuadricula(coord, width, heigth):
+    for i in coord:
+        color = coord.get(i)
+        x = i[0]
+        y = i[1]
+        pygame.draw.rect(ventana, (224, 224, 224), (x - 1, y - 1, width + 2, height + 2))
+        pygame.draw.rect(ventana, (color), (x, y, width, height))
+    
+pygame.init()
+
+ventana = pygame.display.set_mode((1500, 1000))
+
+pygame.display.set_caption("Buscaminas")
+
+width = 50
+height = 50
+coord = {}
+coord = HacerCuadricula(4, width, height, ventana, coord)
+
+run = True
+while run:
+    pygame.time.delay(100)
+    
+    dibujarCuadricula(coord, width, height)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            if event.button == 1:
+                for i in coord:
+                    if pygame.mouse.get_pos()[0] >= i[0] and pygame.mouse.get_pos()[0] <= i[0] + width and pygame.mouse.get_pos()[1] >= i[1] and pygame.mouse.get_pos()[1] <= i[1] + height:
+                        coord[i] = (255,0,0)
+                        
+    pygame.display.update()
+    
+pygame.quit()
