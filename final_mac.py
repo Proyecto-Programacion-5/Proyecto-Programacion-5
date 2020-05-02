@@ -1,4 +1,4 @@
-import random
+mport random
 import time
 import pygame
 
@@ -178,33 +178,33 @@ class Juego:
         
 #------------------------- Metodo que coloca o quita banderas en el mapa ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def PonerOQuitarBandera(self, pos):
-        print (pos)
         for i in self.coord:
-            if pos[0] >= i[0] and pos[0] <= i[0] + self.width and pos[1] >= i[1] and pos[1] <= i[1] + self.width:
-                self.estado[i] = self.estado.get(i, False)
-                pos = [i[0], i[1]]
-                print()
+            if pos[0] >= i[0] and pos[0] <= i[0] + self.width and pos[1] >= i[1] and pos[1] <= i[1] + self.width:   
+                self.estado[i] = self.estado.get(i, False)                                                          #Obtiene el estado del cuadro, True si hay bandera, False si no
+                pos = [i[0], i[1]]                                                                                  #Obtiene la posicion sobre la que se pondra la bandera
+                #----------------------------- Si el cuadro no tiene bandera ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 if self.estado[i] == False:
-                    if self.banderas_restantes != 0:
-                        self.cuadricula.remove(i)
-                        self.ventana.blit(self.bandera, pos)
-                        self.banderas_restantes -=1
-                        self.estado[i] = True
+                    if self.banderas_restantes != 0:                                                                #No hace nada si no quedan banderas
+                        if i in self.cuadricula:                                                                    #Si no se ha descubierto el cuadro se ejecuta
+                            self.cuadricula.remove(i)                                                               #Elimina la posicion de la cuadricula para que no se pueda destapar
+                            self.ventana.blit(self.bandera, pos)                                                    #Muestra la bandera
+                            self.banderas_restantes -=1                                                             #Resta 1 a las banderas del usuario
+                            self.estado[i] = True                                                                   #Actualiza el estado a tener una bandera
                         if self.minasA_dt[i] ==  True:
-                            self.cont_band +=1
+                            self.cont_band +=1                                                                      #Si habia una mina en el lugar le suma 1 al contador final
                         break
-                else:
-                    print()
-                    if self.banderas_restantes < self.banderas_max:
-                        self.coord[i] =  self.coord.get(i, (192, 192, 192))
-                        self.cuadricula.append(i)
-                        self.banderas_restantes +=1
-                        self.estado[i] = False
-                        if self.minasA_dt[i] == True:
-                            self.cont_band -=1
-                        break
+                #----------------------------- Si el cuadro tiene bandera ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                else:                                           
+                    self.cuadricula.append(i)                                                                       #Vuelve a incluir el cuadro en la lista de cuadricula
+                    self.banderas_restantes +=1                                                                     #Le suma 1 a las banderas restantes
+                    self.estado[i] = False                                                                          #Actualiza el estado a no tener bandera
+                    if self.minasA_dt[i] == True:
+                        self.cont_band -=1
+                    break
+                #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        
+   
+#------------------------- Metodo que lleva a cabo la accion principal ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ 
     def ejecucion(self, pos):
         for i in self.coord:
             if pos[0] >= i[0] and pos[0] <= i[0] + self.width and pos[1] >= i[1] and pos[1] <= i[1] + self.width:
