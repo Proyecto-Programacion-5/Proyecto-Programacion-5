@@ -88,64 +88,63 @@ class Juego:
 
 #----------------------- Metodo que mezcla las minas para que el jugador no pierda en el primer turno -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def safe(self, pos):
-        print(pos)
         for i in self.coord:
-            if pos[0] >= i[0] and pos[0] <= i[0] + self.width and pos[1] >= i[1] and pos[1] <= i[1] + self.width:
-                print(i)
-                while self.minasA_dt[i] != 0:
+            if pos[0] >= i[0] and pos[0] <= i[0] + self.width and pos[1] >= i[1] and pos[1] <= i[1] + self.width:   #Revisa si la posicion en la que se dio click es un cuadro de la cuadricula o no
+                while self.minasA_dt[i] != 0:                                                                       #Vuelve a asignar las minas y a contar los cuadros hasta que el cuadro en que se presiono no tenga minas alrededor
                     self.ColocarMinas()
                     self.ContarCuadros()
-                return 1
-        return 0
+                return 1                                                                                            #Retorna 1 si se presiono en un cuadro
+        return 0                                                                                                    #Retorna 0 si no se presiono un cuadro
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     
-   
-    #Metodo que cuenta las minas que estan alrededor de algun cuadro
+#----------------------- Metodo que cuenta las minas que estan alrededor de algun cuadro ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def ContarCuadros(self):
-        self.minasA_dt = {}
-        counter = 0
+        self.minasA_dt = {}                                                                     #Reinicia el diccionario para reasignar en la primera jugada
+        counter = 0                                                                             #Contador que avanza por la cuadricula
         for i in self.minas_d:
-            minasC = 0
-            y = self.cuadricula[counter]
-            if self.minas_d[i] == True:
-                self.minasA_dt[i] = True
+            minasC = 0                                                                          #Contador de minas aledañas
+            y = self.cuadricula[counter]                                                        #Posicion que se esta evaluando actualmente
+            if self.minas_d[i] == True:                             
+                self.minasA_dt[i] = True                                                        #Usa la misma convencion de minas_d para indicar si hay minas
+            #----------------------- Si el cuadro evaluado no tiene mina revisa alrededor desde la derecha en sentido antihorario -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             else:
-                if (y[0] + self.width + 5 ,y[1]) in self.minas_d:
+                if (y[0] + self.width + 5 ,y[1]) in self.minas_d:                               
                     if self.minas_d[(y[0] + self.width + 5 ,y[1])] == True:
                         minasC += 1
-                if (y[0] + self.width + 5 ,y[1] + self.width + 5 ) in self.minas_d:
+                if (y[0] + self.width + 5 ,y[1] + self.width + 5 ) in self.minas_d:            
                     if self.minas_d[(y[0] + self.width + 5 ,y[1] + self.width + 5 )] == True:
                         minasC += 1
-                if (y[0],y[1] + self.width + 5 ) in self.minas_d:
+                if (y[0],y[1] + self.width + 5 ) in self.minas_d:                              
                     if self.minas_d[(y[0],y[1] + self.width + 5 )] == True:
                         minasC += 1
-                if (y[0] - self.width - 5 ,y[1] + self.width + 5 ) in self.minas_d:
+                if (y[0] - self.width - 5 ,y[1] + self.width + 5 ) in self.minas_d:             
                     if self.minas_d[(y[0] - self.width - 5 ,y[1] + self.width + 5 )] == True:
                         minasC += 1
-                if (y[0] - self.width - 5 ,y[1]) in self.minas_d:
+                if (y[0] - self.width - 5 ,y[1]) in self.minas_d:                              
                     if self.minas_d[(y[0] - self.width - 5 ,y[1])] == True:
                         minasC += 1
-                if (y[0] - self.width - 5 ,y[1] - self.width - 5 ) in self.minas_d:
+                if (y[0] - self.width - 5 ,y[1] - self.width - 5 ) in self.minas_d:             
                     if self.minas_d[(y[0] - self.width - 5 ,y[1] - self.width - 5 )] == True:
                         minasC += 1
-                if (y[0],y[1] - self.width - 5 ) in self.minas_d:
+                if (y[0],y[1] - self.width - 5 ) in self.minas_d:                               
                     if self.minas_d[(y[0],y[1] - self.width - 5 )] == True:
                         minasC += 1 
-                if (y[0] + self.width + 5 ,y[1] - self.width - 5 ) in self.minas_d:
+                if (y[0] + self.width + 5 ,y[1] - self.width - 5 ) in self.minas_d:             
                     if self.minas_d[(y[0] + self.width + 5 ,y[1] - self.width - 5 )] == True:
                         minasC += 1 
                 self.minasA_dt[i] = self.minasA_dt.get(i, minasC)
-            counter += 1
+            #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            counter += 1                                                                         #Avanza al siguiente cuadro
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-   
-    #Metodo que destapa una casilla del mapa
+#----------------------- Metodo que destapa una casilla del mapa ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def uncover(self, i):
-        val = self.minasA_dt.get(i)
-        pos = [i[0] + (self.width // 5), i[1]]
-        self.coord[i] = (96,96,96)
-        self.MostrarCuadricula()
-        if str(val) == "1":
+        val = self.minasA_dt.get(i)                             #Obtiene el numero del cuadro
+        pos = [i[0] + (self.width // 5), i[1]]                  #Obtine ela posicion para colocar el numero
+        self.coord[i] = (96,96,96)                              #Cambia el color de fondo del cuadro que se descubre
+        self.MostrarCuadricula()                                #Actualiza la cuadricula para que cambie el fondo
+        #---------------------- Evalua los numeros de los cuadros, les asigna distintos colores y los imprime en pantalla ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        if str(val) == "1":                                     #Se debe convertir el 1 a str o si no va a contar el True de las minas como 1
             val = self.fuente.render(str(val), 1, (0,128,255))
             self.ventana.blit(val, pos)
         if val == 2:
@@ -169,22 +168,22 @@ class Juego:
         if val == 8:
             val = self.fuente.render(str(val), 1, (64,64,64))
             self.ventana.blit(val, pos)
-            
-        #Este esta mal nmms
         if val == 9:
             val = self.fuente.render(str(val), 1, (0,0,0))
-            self.ventana.blit(val, pos)
-        #hasta aqui
-        
+            self.ventana.blit(val, pos)    
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         if i in self.cuadricula:
-            self.cuadricula.remove(i)
+            self.cuadricula.remove(i)                           #Finalmente elimina los cuadros destapados de la cuadricula debido a que ya no se usaran
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
-    #Metodo que coloca banderas en el mapa
+#------------------------- Metodo que coloca o quita banderas en el mapa ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def PonerOQuitarBandera(self, pos):
+        print (pos)
         for i in self.coord:
             if pos[0] >= i[0] and pos[0] <= i[0] + self.width and pos[1] >= i[1] and pos[1] <= i[1] + self.width:
                 self.estado[i] = self.estado.get(i, False)
                 pos = [i[0], i[1]]
+                print()
                 if self.estado[i] == False:
                     if self.banderas_restantes != 0:
                         self.cuadricula.remove(i)
@@ -195,6 +194,7 @@ class Juego:
                             self.cont_band +=1
                         break
                 else:
+                    print()
                     if self.banderas_restantes < self.banderas_max:
                         self.coord[i] =  self.coord.get(i, (192, 192, 192))
                         self.cuadricula.append(i)
@@ -203,6 +203,7 @@ class Juego:
                         if self.minasA_dt[i] == True:
                             self.cont_band -=1
                         break
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
     def ejecucion(self, pos):
         for i in self.coord:
