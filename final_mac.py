@@ -4,19 +4,19 @@ import pygame
 
 class Juego:
     
-#-------------------- Inicializador de la clase. Crea la cuadricula, las minas y los valores de cada cuadro ------------------------------------------------------------
+#-------------------- Inicializador de la clase. Crea la cuadricula, las minas y los valores de cada cuadro -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def __init__(self, ancho, alto):
         
-    #-------------------- Tamaño de cuadricula entre 4 y 20 ------------------------------------------------------------------------------------------------------------
+    #-------------------- Tamaño de cuadricula entre 4 y 20 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         self.size = int(input("Ingrese el tamaño de la cuadricula, debe ser mayor que 3 y menor que 21:"))
         while self.size < 4 or self.size > 20:
             print("La cuadricula debe ser mayor que 4 y menor que 20\n")
             self.size = int(input("Ingrese el tamaño de la cuadricula, debe ser mayor que 4:"))
-    #-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
         self.width = 400//self.size                                                 #Ancho de la cuadricula
         
-    #---------------------- Atributos propios de pygame ----------------------------------------------------------------------------------------------------------------
+    #---------------------- Atributos propios de pygame ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         self.fuente = pygame.font.SysFont('newyorkitalicttf', self.width, True)     #Numeros
         self.temp = pygame.font.SysFont('newyorkitalicttf', 20, True)               #Tiempo
         self.msg = pygame.font.SysFont('newyorkitalicttf', 30, True)                #Mensaje de victoria y derrota
@@ -29,9 +29,9 @@ class Juego:
         self.mina = pygame.transform.scale(mina, (self.width , self.width))         #Imagen de la mina
         bandera = pygame.image.load("Bandera.png")
         self.bandera = pygame.transform.scale(bandera, (self.width, self.width))    #Imagen de la bandera
-    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
-    #------------------- Atributos propios del buscaminas ---------------------------------------------------------------------------------------------------------------
+    #------------------- Atributos propios del buscaminas -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         self.coord = {}                                                             #
         self.cont_band = 0                                                          #Contador de banderas bien colocadas
         self.banderas_restantes = 0                                                 #Banderas que tiene el jugador
@@ -39,14 +39,14 @@ class Juego:
         self.estado = {}                                                            #Diccionario con coordenadas y valores booleanos que indican la presencia de banderas
         self.est = True                                                             #Indica con un booleano si se esta en juego o no                                                               
         self.cuadricula = []                                                        #Lista de coordenadas del tablero
-        self.HacerCuadricula()                                                      #Metodo que llena la cuadricula
-        self.minas_d = {}                                                           #Diccionario que indica
-        self.ColocarMinas()
-        self.minasA_dt = {}
-        self.ContarCuadros()
-        
+        self.HacerCuadricula()                                                      
+        self.minas_d = {}                                                           #Diccionario que indica si hay minas o no en una coorenada
+        self.ColocarMinas()                                                         
+        self.minasA_dt = {}                                                         #Diccionario con el valor del nimero de minas aledañas a un cuadro
+        self.ContarCuadros()                                                        
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    #Metodo que crea una cuadricula de coordenadas
+#-------------------- Metodo que llena la cuadricula y el diccionario de coordenadas ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def HacerCuadricula(self):
         x = self.centro[0] - (self.size * (self.width + 5) / 2)
         y = self.centro[1] - (self.size * (self.width + 5) / 2)
@@ -57,33 +57,34 @@ class Juego:
                 x += self.width + 5
             x -= (self.width + 5) * self.size
             y += self.width + 5
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
-    #Metodo que imprime el mapa              
+#--------------------- Metodo que imprime el mapa en pantalla ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------     
     def MostrarCuadricula(self):
         for i in self.cuadricula:
             color = self.coord.get(i)
             x = i[0]
             y = i[1]
-            pygame.draw.polygon(self.ventana, (224, 224, 224), [(x + self.width, y),(x + self.width + 2.5, y - 2.5),  (x - 2.5, y - 2.5), (x - 2.5, y + self.width + 2.5), (x, y + self.width), (x, y)])
-            pygame.draw.polygon(self.ventana, (96, 96, 96), [(x, y + self.width), (x - 2.5, y + self.width + 2.5), (x + self.width + 2.5, y + self.width + 2.5), (x + self.width + 2.5, y - 2.5), (x + self.width, y), (x + self.width, y + self.width)])
-            pygame.draw.rect(self.ventana, (color), (x, y, self.width, self.width))
-
+            pygame.draw.polygon(self.ventana, (224, 224, 224), [(x + self.width, y),(x + self.width + 2.5, y - 2.5),  (x - 2.5, y - 2.5), (x - 2.5, y + self.width + 2.5), (x, y + self.width), (x, y)])                                                        #Borde superior e izquierdo de cada cuadro
+            pygame.draw.polygon(self.ventana, (96, 96, 96), [(x, y + self.width), (x - 2.5, y + self.width + 2.5), (x + self.width + 2.5, y + self.width + 2.5), (x + self.width + 2.5, y - 2.5), (x + self.width, y), (x + self.width, y + self.width)])       #Borde inferior y derecho de cada cuadro
+            pygame.draw.rect(self.ventana, (color), (x, y, self.width, self.width))                                                                                                                                                                             #Cuadros
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
-    #Metodo que asigna minas a una parte de las coordenadas de la cuadricula
+#---------------------- Metodo que asigna minas a una parte de las coordenadas de la cuadricula -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def ColocarMinas(self):
-        self.minas_d = {}
-        self.banderas_restantes = 0
-        self.banderas_max = 0
+        self.minas_d = {}                                                               #Vacia el diccionario para reasignar en la primera jugada
+        self.banderas_restantes = 0                                                     #Reinicia el numero de banderas restantes
+        self.banderas_max = 0                                                           #Reinicia el numero de banderas maximas
         for i in self.cuadricula:
-            self.minas_d[i] = self.minas_d.get(i, False)
+            self.minas_d[i] = self.minas_d.get(i, False)                                #False indica que no hay mina
         rng = random.Random()
-        for i in range(len(self.minas_d) // 5):
-            Mina = rng.randrange(0, len(self.cuadricula))
-            self.minas_d[self.cuadricula[Mina]] = self.minas_d.get(i, True)
-        for i in self.minas_d:
-            if self.minas_d.get(i) == True:
-                self.banderas_restantes +=1
-                self.banderas_max +=1
+        while self.banderas_restantes < len(self.minas_d) // 5:
+            M = rng.randrange(0, len(self.cuadricula))                                  
+            if self.minas_d.get(self.cuadricula[M]) == False:
+                self.minas_d[self.cuadricula[M]] = True                                 #True indica que hay una mina en la posicion M
+                self.banderas_restantes +=1                                             #Cada que asigna una mina aumenta en 1 el numero de banderas restantes
+                self.banderas_max +=1                                                   #Cada que asigna una mina aumenta en 1 el numero de banderas maximas
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     #Metodo que mezcla las minas para que el jugador no pierda en el primer turno
     def safe(self, pos):
@@ -280,7 +281,7 @@ m = 0
 juego = Juego(700,600)
 t1 = time.perf_counter()
 clock = pygame.time.Clock()
-msg = ""
+juega = True
 
 run = True
 while run:    
@@ -289,8 +290,8 @@ while run:
     juego.MostrarCuadricula()
     event = pygame.event.poll()
     if event.type == pygame.QUIT:
-        pygame.quit()
-    if event.type == pygame.MOUSEBUTTONDOWN  and juego.est != "Pierde":
+        run = False
+    if event.type == pygame.MOUSEBUTTONDOWN  and juega:
         pos = event.dict['pos']
         if event.button == 1:
             if m == 0:
@@ -299,17 +300,7 @@ while run:
         if event.button == 3:
             juego.PonerOQuitarBandera(pos)
 
-    if not juego.est:
-        msg = juego.msg.render("Pierde", 1, (255,255,0))
-        pos = (juego.centro[0] - 75, juego.centro[1] - (juego.width + 5) * (juego.size/2) - 40)
-        pygame.draw.rect(juego.ventana, (0,0,0), (pos[0], pos[1], juego.width * 20, 30))
-        juego.ventana.blit(msg, (pos[0], pos[1]))
-        juego.MostrarRespuesta()
-        t2 = time.perf_counter()
-        pygame.display.update()
- 
 
-        
     if juego.cont_band == juego.banderas_max:
         msg = juego.msg.render("Victoria", 1, (255,255,0))
         pos = (juego.centro[0] - 75, juego.centro[1] - (juego.width + 5) * (juego.size/2) - 40)
@@ -317,12 +308,23 @@ while run:
         juego.ventana.blit(msg, (pos[0], pos[1]))
         t2 = time.perf_counter()
         pygame.display.update()
+        juega = False
+        
+    elif not juego.est:
+        msg = juego.msg.render("Pierde", 1, (255,255,0))
+        pos = (juego.centro[0] - 75, juego.centro[1] - (juego.width + 5) * (juego.size/2) - 40)
+        pygame.draw.rect(juego.ventana, (0,0,0), (pos[0], pos[1], juego.width * 20, 30))
+        juego.ventana.blit(msg, (pos[0], pos[1]))
+        juego.MostrarRespuesta()
+        t2 = time.perf_counter()
+        pygame.display.update()
+        juega = False
 
     else:
         juego.ImpTiempo(t1)
 
         pygame.display.update()
 
-
+pygame.quit()
 
 ##EOE
