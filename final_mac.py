@@ -32,7 +32,7 @@ class Juego:
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
     #------------------- Atributos propios del buscaminas -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        self.coord = {}                                                             #
+        self.coord = {}                                                             #Diccionario con coordenadas y color del cuadro
         self.cont_band = 0                                                          #Contador de banderas bien colocadas
         self.banderas_restantes = 0                                                 #Banderas que tiene el jugador
         self.banderas_max = 0                                                       #Banderas maximas que puede tener el jugador
@@ -86,14 +86,18 @@ class Juego:
                 self.banderas_max +=1                                                   #Cada que asigna una mina aumenta en 1 el numero de banderas maximas
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    #Metodo que mezcla las minas para que el jugador no pierda en el primer turno
+#----------------------- Metodo que mezcla las minas para que el jugador no pierda en el primer turno -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def safe(self, pos):
+        print(pos)
         for i in self.coord:
             if pos[0] >= i[0] and pos[0] <= i[0] + self.width and pos[1] >= i[1] and pos[1] <= i[1] + self.width:
+                print(i)
                 while self.minasA_dt[i] != 0:
                     self.ColocarMinas()
                     self.ContarCuadros()
                 return 1
+        return 0
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     
    
     #Metodo que cuenta las minas que estan alrededor de algun cuadro
@@ -291,7 +295,7 @@ while run:
     event = pygame.event.poll()
     if event.type == pygame.QUIT:
         run = False
-    if event.type == pygame.MOUSEBUTTONDOWN  and juega:
+    if event.type == pygame.MOUSEBUTTONDOWN and juega:
         pos = event.dict['pos']
         if event.button == 1:
             if m == 0:
