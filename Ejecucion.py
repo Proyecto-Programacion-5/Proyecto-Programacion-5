@@ -1,11 +1,11 @@
 import pygame
 import time
-import Main_class as MC
+import definicion as Df
 
 #----------------------------- Bloque de ejecucion -------------------------------------------------------------------------------------------------------------------------------------------------------
 pygame.init()
 m = 0                                                                                                               #Variable que regula el metodo safe
-juego = MC.Juego(700,600)                                                                                           #Inicializa el juego
+juego = Df.Juego(700,600)                                                                                           #Inicializa el juego
 t1 = time.perf_counter()                                                                                            #Obtiene el momento en que se inicio el juego
 juega = True                                                                                                        #Permite leer o no las acciones sobre el mapa
 pos_arriba = (juego.centro[0] - 75, juego.centro[1] - (juego.width + 5) * (juego.size/2) - 40)                      #Posicion de los mensajes arriba de la cuadricula
