@@ -193,7 +193,7 @@ class Juego:
                         if self.minasA_dt[i] ==  True:
                             self.cont_band +=1                                                                      #Si habia una mina en el lugar le suma 1 al contador final
                         break
-                #----------------------------- Si el cuadro tiene bandera ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                #----------------------------- Si el cuadro tiene bandera ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 else:                                           
                     self.cuadricula.append(i)                                                                       #Vuelve a incluir el cuadro en la lista de cuadricula
                     self.banderas_restantes +=1                                                                     #Le suma 1 a las banderas restantes
@@ -208,54 +208,57 @@ class Juego:
     def ejecucion(self, pos):
         for i in self.coord:
             if pos[0] >= i[0] and pos[0] <= i[0] + self.width and pos[1] >= i[1] and pos[1] <= i[1] + self.width:
-                if self.minas_d[i] == True:
-                    pos = [i[0], i[1] - 5]
-                    self.ventana.blit(self.mina, pos)
-                    self.est = False                    
+                if self.minas_d[i] == True:                                                                         #Si se oprimio una mina
+                    pos = [i[0], i[1]]                                                                              #Obtiene la posicion para poner la mina
+                    self.ventana.blit(self.mina, pos)                                                               #Pone la ventana
+                    self.est = False                                                                                #Hace que el juego se deje de ejecutar
                 else:
-                    self.uncover(i)
-                    if self.minasA_dt[i] == 0:
-                        self.minasA_dt[i] = "0"
+                    self.uncover(i)                                                                                 #Destapa el cuadro
+                    if self.minasA_dt[i] == 0:                                                                      #Si no hay minas aledañas
+                        self.minasA_dt[i] = "0"                                                                     #Convierte el 0 a str para que no lo vuelva a leer como 0
+                        
+                    #--------------------------------- Revisa los valores alrededor en el mismo orden que la funcion contar cuadros, los destapa y revisa su valor para expandir como el buscaminas clasico -----------------------------------------------------------------------------------------------
                         if (i[0] + self.width + 5 , i[1]) in self.minasA_dt:
                             a = self.minasA_dt[(i[0] + self.width + 5 , i[1])]
                             self.uncover((i[0] + self.width + 5 , i[1]))
                             if a == 0:
-                                self.ejecucion((i[0] + self.width + 5 , i[1]))
+                                self.ejecucion((i[0] + self.width + 5 , i[1]))                      #Si el valor de la casilla es 0 repite la ejecucion con esa casilla
+                        if (i[0] + self.width + 5 ,i[1] + self.width + 5 ) in self.minas_d:
+                            a = self.minasA_dt[(i[0] + self.width + 5 ,i[1] + self.width + 5 )]
+                            self.uncover((i[0] + self.width + 5 ,i[1] + self.width + 5 ))
+                            if a == 0:
+                                self.ejecucion((i[0] + self.width + 5 ,i[1] + self.width + 5 ))    #Si el valor de la casilla es 0 repite la ejecucion con esa casilla     
                         if (i[0], i[1] + self.width + 5 ) in self.minasA_dt:
                             a = self.minasA_dt[(i[0], i[1] + self.width + 5 )]
                             self.uncover((i[0], i[1] + self.width + 5 ))
                             if a == 0:
-                                self.ejecucion((i[0], i[1] + self.width + 5 ))
+                                self.ejecucion((i[0], i[1] + self.width + 5 ))                      #Si el valor de la casilla es 0 repite la ejecucion con esa casilla
+                        if (i[0] - self.width - 5 ,i[1] + self.width + 5 ) in self.minas_d:
+                            a = self.minasA_dt[(i[0] - self.width - 5 ,i[1] + self.width + 5 )]
+                            self.uncover((i[0] - self.width - 5 ,i[1] + self.width + 5 ))
+                            if a == 0:
+                                self.ejecucion((i[0] - self.width - 5 ,i[1] + self.width + 5 ))     #Si el valor de la casilla es 0 repite la ejecucion con esa casilla
                         if (i[0] - self.width - 5 , i[1]) in self.minasA_dt:
                             a = self.minasA_dt[(i[0] - self.width - 5 , i[1])]
                             self.uncover((i[0] - self.width - 5 , i[1]))
                             if a == 0:
-                                self.ejecucion((i[0] - self.width - 5 , i[1]))
+                                self.ejecucion((i[0] - self.width - 5 , i[1]))                      #Si el valor de la casilla es 0 repite la ejecucion con esa casilla
+                        if (i[0] - self.width - 5 ,i[1] - self.width - 5 ) in self.minas_d:
+                            a = self.minasA_dt[(i[0] - self.width - 5 ,i[1] - self.width - 5 )]
+                            self.uncover((i[0] - self.width - 5 ,i[1] - self.width - 5 ))
+                            if a == 0:
+                                self.ejecucion((i[0] - self.width - 5 ,i[1] - self.width - 5 ))                
                         if (i[0], i[1] - self.width - 5 ) in self.minasA_dt:
                             a = self.minasA_dt[(i[0], i[1] - self.width - 5 )]
                             self.uncover((i[0], i[1] - self.width - 5 ))
                             if a == 0:
                                 self.ejecucion((i[0], i[1] - self.width - 5 ))
-                        if (i[0] + self.width + 5 ,i[1] + self.width + 5 ) in self.minas_d:
-                            a = self.minasA_dt[(i[0] + self.width + 5 ,i[1] + self.width + 5 )]
-                            self.uncover((i[0] + self.width + 5 ,i[1] + self.width + 5 ))
-                            if a == 0:
-                                self.ejecucion((i[0] + self.width + 5 ,i[1] + self.width + 5 ))
-                        if (i[0] - self.width - 5 ,i[1] + self.width + 5 ) in self.minas_d:
-                            a = self.minasA_dt[(i[0] - self.width - 5 ,i[1] + self.width + 5 )]
-                            self.uncover((i[0] - self.width - 5 ,i[1] + self.width + 5 ))
-                            if a == 0:
-                                self.ejecucion((i[0] - self.width - 5 ,i[1] + self.width + 5 ))
                         if (i[0] + self.width + 5 ,i[1] - self.width - 5 ) in self.minas_d:
                             a = self.minasA_dt[(i[0] + self.width + 5 ,i[1] - self.width - 5 )]
                             self.uncover((i[0] + self.width + 5 ,i[1] - self.width - 5 ))
                             if a == 0:
                                 self.ejecucion((i[0] + self.width + 5 ,i[1] - self.width - 5 ))
-                        if (i[0] - self.width - 5 ,i[1] - self.width - 5 ) in self.minas_d:
-                            a = self.minasA_dt[(i[0] - self.width - 5 ,i[1] - self.width - 5 )]
-                            self.uncover((i[0] - self.width - 5 ,i[1] - self.width - 5 ))
-                            if a == 0:
-                                self.ejecucion((i[0] - self.width - 5 ,i[1] - self.width - 5 ))
+
                 break
 
     
@@ -272,7 +275,7 @@ class Juego:
     def MostrarRespuesta(self):
         for i in self.minas_d:
             if self.minas_d[i] == True:
-                pos = [i[0], i[1] + 4]
+                pos = [i[0], i[1]]
                 self.ventana.blit(self.mina, pos)
             
             
