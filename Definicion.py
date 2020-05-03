@@ -25,10 +25,13 @@ class Juego:
         self.ventana = pygame.display.set_mode((self.p_ancho, self.p_alto))         #Ventana y dimensiones
         pygame.display.set_caption("Buscaminas")    
         self.centro = self.ventana.get_rect().center                                #Centro de la ventana
-        mina = pygame.image.load("Mina .png")               
+        mina = pygame.image.load("Mina.png")               
         self.mina = pygame.transform.scale(mina, (self.width , self.width))         #Imagen de la mina
         bandera = pygame.image.load("Bandera.png")
         self.bandera = pygame.transform.scale(bandera, (self.width, self.width))    #Imagen de la bandera
+        pygame.mixer.init()                                                                     
+        pygame.mixer.music.load('explosion.mp3')                                    #Sonido de la explosion
+        pygame.mixer.music.set_volume(0.3)
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
     #------------------- Atributos propios del buscaminas -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -208,10 +211,11 @@ class Juego:
     def ejecucion(self, pos):
         for i in self.coord:
             if pos[0] >= i[0] and pos[0] <= i[0] + self.width and pos[1] >= i[1] and pos[1] <= i[1] + self.width: 
-                if self.estado[i] != True:                                                                             #Solo abre si en el cuadro no hay bandera
+                if self.estado[i] != True:                                                                              #Solo abre si en el cuadro no hay bandera
                     if self.minas_d[i] == True:                                                                         #Si se oprimio una mina
                         pos = [i[0], i[1]]                                                                              #Obtiene la posicion para poner la mina
-                        self.ventana.blit(self.mina, pos)                                                               #Pone la ventana
+                        self.ventana.blit(self.mina, pos)                                                               #Pone la mina en laventana
+                        pygame.mixer.music.play()
                         self.est = False                                                                                #Hace que el juego se deje de ejecutar
                     else:
                         self.uncover(i)                                                                                 #Destapa el cuadro
