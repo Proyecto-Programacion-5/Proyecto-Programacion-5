@@ -13,3 +13,6 @@ Archivos extra:
   - explosion.mp3
   - Mina.png
   - Bandera.png
+
+
+Notese que tanto los archivos principales como los opcionales deben estar presentes en el mismo directorio, ademas de estar nombrados de la misma manera en la que se enuncia en este texto, no siendo más, ¡Diviertase!
