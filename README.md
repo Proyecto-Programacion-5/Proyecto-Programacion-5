@@ -8,6 +8,8 @@ Archivos Principales:
 
 
 Estos son los archivos primarios del proyecto programados en python 3.7, se deben poner en un mismo directorio y ejecutar "ejecucion.py", ademas de los siguientes archivos, los cuales pese a no contener ninguna parte logica del programa, son fundamentales para que el mismo opere:
-  -explosion.mp3
-  -Mina.png
-  -Bandera.png
+
+Archivos extra:
+  - explosion.mp3
+  - Mina.png
+  - Bandera.png
